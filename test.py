@@ -22,18 +22,20 @@ day_100_ago = (datetime.datetime.now() - datetime.timedelta(days = 100)).strftim
 
 df = ts.trade_cal()
 
+print df[df.calendarDate == '2018-03-05'].isOpen == 1
+
 #'calendarDate', 'isOpen'
 
-df2 = df.set_index(['calendarDate'])
+#df2 = df.set_index(['calendarDate'])
 #print df2.head()
 #print df2.index
 #for i in df2.index:
 #    if i == u'2018-12-31':
 #        print 'xxxxxxxxxxxxx'
 #print df2[u'2018-12-31']
-print type(df2.loc[u'2018-03-05']), df2.loc[u'2018-03-05']
-is_open = df2.loc[u'2018-03-05']['isOpen']
-print 'is_open:', is_open, is_open == 1, type(is_open)
+#print type(df2.loc[u'2018-03-05']), df2.loc[u'2018-03-05']
+#is_open = df2.loc[u'2018-03-05']['isOpen']
+#print 'is_open:', is_open, is_open == 1, type(is_open)
 
 #[day_today]
 #print type(df)

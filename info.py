@@ -43,7 +43,7 @@ def get_info(code, date = 0):
     stock = session.query(Stock).filter(Stock.code==code, Stock.date==date).all()
     if len(stock) == 0:
         #logging.info('get_info failed code:%r date:%r', code, date)
-        return None
+        raise Exception("code:%r date:%r empty", code, date)
     #logging.info('date:%r open:%r', stock[0].date, stock[0].open)
     # 关闭Session:
     #session.close()
