@@ -17,14 +17,16 @@ def get():
     quote_ctx = OpenQuoteContext(host='127.0.0.1', port=11111)
     SysConfig.set_all_thread_daemon
 
-    rehab = quote_ctx.get_rehab("HK.00700")
-    print type(rehab)
-    print type(rehab[0])
-    print rehab[0]
-    print type(rehab[1])
-    print rehab[1]
+    rehab_res = quote_ctx.get_rehab("HK.00700")
+    if rehab_res[0] != 0:
+        logging.info("quote_ctx.get_rehab fail:", rehab_res[1])
+        return
+
+    logging.info("quote_ctx.get_rehab get success")
+    rehab = rehab_res[1]
+
     print rehab
-    #print rehab.columns.values.tolist()
+    print rehab.columns.values.tolist()
 
     quote_ctx.close()
 
