@@ -1,0 +1,40 @@
+
+INFO: 2019-05-23 14:43:23
+
+code:HK.00823
+
+rehab:
+
+ex_div_date              2006-08-15
+split_ratio                     NaN
+per_cash_div                 0.2181
+per_share_div_ratio             NaN
+per_share_trans_ratio           NaN
+allotment_ratio                 NaN
+allotment_price                 NaN
+stk_spo_ratio                   NaN
+stk_spo_price                   NaN
+forward_adj_factorA               1
+forward_adj_factorB         -0.2181
+backward_adj_factorA              1
+backward_adj_factorB         0.2181
+Name: 0, dtype: object
+---------------------
+ex_div_date              2006-12-08
+split_ratio                     NaN
+per_cash_div                 0.3281
+per_share_div_ratio             NaN
+per_share_trans_ratio           NaN
+allotment_ratio                 NaN
+allotment_price                 NaN
+stk_spo_ratio                   NaN
+stk_spo_price                   NaN
+forward_adj_factorA               1
+forward_adj_factorB         -0.3281
+backward_adj_factorA              1
+backward_adj_factorB         0.3281
+Name: 1, dtype: object
+
+history:
+   code      time_key             open  close   high   low  pe_ratio  turnover_rate   volume     turnover  change_rate  last_close
+0  HK.00823  2018-11-27 00:00:00  73.3   73.0  73.75  72.8       0.0        0.00265  5596990  409825135.0    -0.409277     74.0938
