@@ -4,8 +4,17 @@
 import os
 import logging
 
+from sqlalchemy import Column, Float, Integer, String, create_engine, or_
+from sqlalchemy.orm import sessionmaker
+from sqlalchemy.ext.declarative import declarative_base
+
 from futu import *
+
 import log
+
+engine = create_engine('mysql://root:password@127.0.0.1/stock?charset=utf8')
+DBSession = sessionmaker(bind=engine)
+session = DBSession()
 
 class StockUtil:
   ctx = None
@@ -141,4 +150,58 @@ class StockUtil:
         logging.error("request_history_kline fail:%s", res[1])
         return None
     return res[1]
+
+# 创建对象的基类:
+Base = declarative_base()
+
+# 定义User对象:
+class Rehab(Base):
+  # 表的名字:
+  __tablename__ = 'rehab'
+
+  # 表的结构:
+  index = Column(Integer(), primary_key=True)
+  code = Column(String())
+  ex_div_date = Column(String())
+  per_cash_div = Column(Float())
+
+  def to_string(self):
+    return "code:" + self.code + " ex_div_date:" + self.ex_div_date + " per_cash_div:" + str(self.per_cash_div)
+
+  def ex_div_date_to_time_key(self):
+    return self.ex_div_date + " 00:00:00"
+
+class History(Base):
+  __tablename__ = 'history'
+  
+  index = Column(Integer(), primary_key=True)
+  code = Column(String())
+  time_key = Column(String())
+  open = Column(Float())
+  close = Column(Float())
+
+  def to_string(self):
+    return "code:" + self.code + " time_key:" + self.time_key + " open:" + str(self.open)
+
+
+def get_rehabs(code):
+  # 创建Query查询，filter是where条件，最后调用one()返回唯一行，如果调用all()则返回所有行:
+  stocks = session.query(Rehab).filter(Rehab.code==code).all()
+  if len(stocks) == 0:
+      logging.info('code:%r get rehab none', code)
+      return None
+  #logging.info('date:%r open:%r', stock[0].date, stock[0].open)
+  # 关闭Session:
+  #session.close()
+  return stocks
+
+def get_historys(code, date):
+  # 创建Query查询，filter是where条件，最后调用one()返回唯一行，如果调用all()则返回所有行:
+  stocks = session.query(History).filter(History.code == code).filter(History.time_key == date).all()
+  #filter(or_(User.name == 'ed', User.name == 'wendy'))
+  #filter(User.name.in_(['Alice', 'Bob', 'Carl']))
+  if len(stocks) == 0:
+      logging.info('code:%r date:%r get history none', code, date)
+      return None
+  return stocks
 

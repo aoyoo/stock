@@ -18,6 +18,7 @@ class context:
     refresh_time = 0
 
     count = 0
+    first_execute_time = 0
     last_execute_time = 0
 
     def __init__(self, name, refresh_time, max_count):
@@ -26,28 +27,29 @@ class context:
         self.refresh_time = refresh_time
 
         self.count = 0
+        self.first_execute_time = now()
         self.last_execute_time = now()
         logging.info("function execute context init name:%r:%r", self.name, self.last_execute_time)
 
     def refresh(self):
         self.count = 0
+        self.first_execute_time = now()
         self.last_execute_time = now()
 
     def execute(self, f, *args):
-        if (now() - self.last_execute_time > self.refresh_time):
+        delta_time = now() - self.first_execute_time
+        if (delta_time > self.refresh_time):
             self.refresh()
 
         if self.count > self.max_count:
-            self.count += 1
-            self.last_execute_time = now()
-            logging.info("name:%r can not execute. count:%r last_execute_time:%r", self.name, self.count, self.last_execute_time)
-            return None
+            logging.info("name:%r need wait for %r. count:%r first_execute_time:%r last_execute_time:%r", self.name, delta_time, self.count, self.first_execute_time, self.last_execute_time)
+            time.sleep(self.refresh_time - delta_time)
+            self.refresh()
 
         self.count += 1
         self.last_execute_time = now()
         logging.info("name:%r execute. count:%r last_execute_time:%r", self.name, self.count, self.last_execute_time)
         return f(*args)
-
 
 class execute_manager:
     execute_context = {}

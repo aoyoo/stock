@@ -42,49 +42,30 @@ def update_rehab_to_sql(info):
 
 if __name__ == '__main__':
     log.init_log('./log', level=logging.DEBUG)
-    logging.info('start')
+    logging.debug('start')
 
-    util = stock_util.StockUtil()
-    util.init()
+    #util = stock_util.StockUtil()
+    #util.init()
     
     execute_mgr = execute_manager.get_manager()
     
     hk_reits_codes =  [u'HK.00823', u'HK.87001', u'HK.00778', u'HK.02778', u'HK.00405', u'HK.00808']
 
-    for code in hk_reits_codes:
     #for code in [u'HK.00823']:
-        rehab = execute_mgr.execute(util.get_rehab, code)
-        if rehab is None:
+    for code in hk_reits_codes:
+        rehabs = stock_util.get_rehabs(code)
+        if rehabs is None:
             continue
-        rehab['code'] = code
-        for i in range(len(rehab) - 1,len(rehab)):
-            ex_div_date = rehab.iloc[i].ex_div_date
-            per_cash_div = rehab.iloc[i].per_cash_div
-            logging.info("code:%s get ex_div_date:%s per_cash_div:%s", code, ex_div_date, per_cash_div)
-        update_rehab_to_sql(rehab)
-
-        page = None
-        count = 0
-        while True:
-            #res = util.request_history_kline(code, yestoday_day, today_day, page)
-            res = execute_mgr.execute(util.request_history_kline, code, history_start_day, today_day, page)
-            if res[0] != RET_OK:
-                logging.error("code:%s get_history fail:%s", code, res[1])
-                break
-
-            count += 1
-            update_histroy_to_sql(res[1])
-
-            if res[2] != None:
-                logging.info("code:%s get_history has page:%d", code, count)
-                page = res[2]
+        for stock in rehabs:
+            logging.debug(stock.to_string())
+            historys = stock_util.get_historys(code, stock.ex_div_date_to_time_key())
+            if historys is None:
                 continue
-            else:
-                break
-            
-#def get_history(self, code, day):
+            for hist in historys:
+                logging.debug(hist.to_string())
+                logging.info("stock:%r date:%r cash_div:%r eps:%r", code, stock.ex_div_date, stock.per_cash_div, stock.per_cash_div/hist.close)
 
-    logging.info('end')
-    util.close()
+    #logging.debug('end')
+    #util.close()
 
 
