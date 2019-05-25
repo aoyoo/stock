@@ -14,7 +14,7 @@ import log
 
 engine = create_engine('mysql://root:password@127.0.0.1/stock?charset=utf8')
 DBSession = sessionmaker(bind=engine)
-session = DBSession()
+#session = DBSession()
 
 class StockUtil:
   ctx = None
@@ -186,16 +186,17 @@ class History(Base):
 
 def get_rehabs(code):
   # 创建Query查询，filter是where条件，最后调用one()返回唯一行，如果调用all()则返回所有行:
-  stocks = session.query(Rehab).filter(Rehab.code==code).all()
+  session = DBSession()
+  stocks = session.query(Rehab).filter(Rehab.code == code).all()
   if len(stocks) == 0:
       logging.info('code:%r get rehab none', code)
       return None
   #logging.info('date:%r open:%r', stock[0].date, stock[0].open)
-  # 关闭Session:
-  #session.close()
+  session.close()
   return stocks
 
 def get_historys(code, date):
+  session = DBSession()
   # 创建Query查询，filter是where条件，最后调用one()返回唯一行，如果调用all()则返回所有行:
   stocks = session.query(History).filter(History.code == code).filter(History.time_key == date).all()
   #filter(or_(User.name == 'ed', User.name == 'wendy'))
@@ -203,5 +204,6 @@ def get_historys(code, date):
   if len(stocks) == 0:
       logging.info('code:%r date:%r get history none', code, date)
       return None
+  session.close()
   return stocks
 
