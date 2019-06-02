@@ -50,3 +50,9 @@ def init_log(log_path, level=logging.INFO, when="D", backup=7,
     handler.setLevel(logging.WARNING)
     handler.setFormatter(formatter)
     logger.addHandler(handler)
+
+    handler = logging.StreamHandler()
+    handler.setLevel(level)
+    handler.setFormatter(formatter)
+    logger.addHandler(handler)
+

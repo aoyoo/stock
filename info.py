@@ -12,9 +12,8 @@ from sqlalchemy.ext.declarative import declarative_base
 
 import log
 
-engine = create_engine('mysql://root:password@127.0.0.1/stock?charset=utf8')
+engine = create_engine('mysql://root:password@127.0.0.1/stock?charset=utf8', echo=True)
 DBSession = sessionmaker(bind=engine)
-session = DBSession()
 
 # 创建对象的基类:
 Base = declarative_base()
@@ -45,8 +44,6 @@ def get_info(code, date = 0):
         #logging.info('get_info failed code:%r date:%r', code, date)
         raise Exception("code:%r date:%r empty", code, date)
     #logging.info('date:%r open:%r', stock[0].date, stock[0].open)
-    # 关闭Session:
-    #session.close()
     return stock[0]
 
 if __name__ == '__main__':
