@@ -3,7 +3,8 @@
 ## 恒生房地产基金指数
 HSREIT
 
-成份股
+### 成份股
+```
 股票號碼 國際證券號碼 公司名稱 比重(%)
 823 HK0823032773 領展房產基⾦ 25.17
 87001 HK0000078516 匯賢產業信託 19.90
@@ -12,8 +13,11 @@ HSREIT
 405 HK0405033157 越秀房產信託基⾦ 13.60
 808 HK0808032913 泓富產業信託 5.41
 合共 100.00
+```
 
 来自: https://www.hsi.com.hk/static/uploads/contents/zh_hk/dl_centre/factsheets/reitc.pdf
+
+```
         code        date  dividend_ratio  price  year
 19  HK.00823  2018-11-27        0.017893   73.0  2018
 year
@@ -66,4 +70,4 @@ year
 2018    0.057857
 2019    0.025648
 Name: dividend_ratio, dtype: float64
-
+```
