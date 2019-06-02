@@ -165,6 +165,11 @@ class Rehab(Base):
   ex_div_date = Column(String())
   per_cash_div = Column(Float())
 
+  def is_legal(self):
+    if self.per_cash_div is None or self.per_cash_div < 0:
+      return False
+    return True
+
   def to_string(self):
     return "code:" + self.code + " ex_div_date:" + self.ex_div_date + " per_cash_div:" + str(self.per_cash_div)
 
@@ -179,6 +184,13 @@ class History(Base):
   time_key = Column(String())
   open = Column(Float())
   close = Column(Float())
+
+  def is_legal(self):
+    if self.open is None or self.open < 0:
+      return False
+    if self.close is None or self.close < 0:
+      return False
+    return True
 
   def to_string(self):
     return "code:" + self.code + " time_key:" + self.time_key + " open:" + str(self.open)
